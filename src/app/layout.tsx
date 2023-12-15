@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import Script from 'next/script'
+import ConfigurationContextProvider from '@/components/configuration-context'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,9 +16,19 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
+  // const rjsSrc = 'https://js.recurly.dev:8020/build/recurly.js';
+  // const rjsSrc = 'https://js.recurly.com/v4/recurly.js';
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <head>
+        <link rel="stylesheet" href="https://js.recurly.com/v4/recurly.css" />
+      </head>
+
+      <body className={inter.className}>
+        <ConfigurationContextProvider>
+          {children}
+        </ConfigurationContextProvider>
+      </body>
     </html>
   )
 }
