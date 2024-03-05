@@ -13,12 +13,12 @@ type ProviderWithConfigParams = PropsWithChildren & {
 export default function RJSProvider({ children }: PropsWithChildren) {
   const [loading, setLoading] = useState(true);
 
-  const { api, rjs, envConfig } = useConfigurationContext();
+  const { api, rjs, publicKey } = useConfigurationContext();
 
 
   const providerParams = {
     api,
-    publicKey: envConfig[api].publicKey,
+    publicKey,
   }
 
   return (

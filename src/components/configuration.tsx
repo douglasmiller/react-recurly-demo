@@ -23,8 +23,9 @@ export default function Configuration() {
     rjs,
     setRjs,
     publicKey,
-    setEnvPublicKey,
-    envConfig,
+    setPublicKey,
+    braintreeAuth,
+    setBraintreeAuth,
   } = useConfigurationContext();
 
   const className = "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500";
@@ -43,7 +44,6 @@ export default function Configuration() {
           value={rjs}
           onChange={(e) => {
             setRjs(e.target.value);
-            console.log('reloading')
             window.location.reload();
           }}
           className={className}
@@ -58,7 +58,6 @@ export default function Configuration() {
           value={api}
           onChange={(e) => {
             setApi(e.target.value);
-            console.log('reloading')
             window.location.reload();
           }}
           className={className}
@@ -70,10 +69,19 @@ export default function Configuration() {
         <label htmlFor="public-key" className="flex items-center">Public Key</label>
         <input
           type="text"
-          value={envConfig[api].publicKey}
+          value={publicKey}
           onChange={(e) => {
-            setEnvPublicKey(e.target.value);
-            console.log('reloading')
+            setPublicKey(e.target.value);
+            window.location.reload();
+          }}
+          className={className}
+        />
+        <label htmlFor="braintree-auth" className="flex items-center">Braintree Client Auth</label>
+        <input
+          type="text"
+          value={braintreeAuth}
+          onChange={(e) => {
+            setBraintreeAuth(e.target.value);
             window.location.reload();
           }}
           className={className}

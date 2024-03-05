@@ -12,12 +12,10 @@ type ConfigurationContext = {
   setApi: Dispatch<string>;
   rjs: string;
   setRjs: Dispatch<SetStateAction<string>>;
-  publicKey: string;
-  setPublicKey: Dispatch<SetStateAction<string>>;
   braintreeAuth: string;
-  setBraintreeAuth: Dispatch<SetStateAction<string>>;
-  envConfig: EnvironmentConfigurations;
-  setEnvPublicKey: Dispatch<string>;
+  setBraintreeAuth: Dispatch<string>;
+  publicKey: string;
+  setPublicKey: Dispatch<string>;
 }
 
 type EnvironmentConfiguration = {
@@ -34,7 +32,7 @@ const DEFAULT_RJS = "https://js.recurly.com/v4/recurly.js";
 
 const DEFAULT_ENV_CONFIG = {
   publicKey: '',
-  braintreeAuth: '',
+  braintreeAuth: 'not set',
 } as EnvironmentConfiguration;
 
 const DEFAULT_ENV_CONFIGS = {
@@ -46,8 +44,6 @@ export const ConfigurationContext = createContext<ConfigurationContext | null>(n
 export default function ConfigurationContextProvider({ children }: ConfigurationProps) {
   const [api, setApi] = useLocalStorage("recurly-api", DEFAULT_API);
   const [rjs, setRjs] = useLocalStorage("recurly-js", DEFAULT_RJS);
-  const [publicKey, setPublicKey] = useLocalStorage("public-key", "");
-  const [braintreeAuth, setBraintreeAuth] = useLocalStorage("braintree-auth", "");
 
   const [envConfig, setEnvConfig] = useLocalStorage<EnvironmentConfigurations>("env-configs", DEFAULT_ENV_CONFIGS);
 
@@ -64,17 +60,25 @@ export default function ConfigurationContextProvider({ children }: Configuration
     setApi(newApi);
   }
 
-  const setEnvPublicKey = (value: string) => {
+  const setEnvConfigValue = (key: string, value: string) => {
     setEnvConfig((currentEnv: EnvironmentConfigurations) => {
       return {
         ...currentEnv,
         [api]: { 
           ...DEFAULT_ENV_CONFIG,
           ...currentEnv[api],
-          publicKey: value,
+          [key]: value,
         },
       };
     });
+  };
+
+  const setPublicKey = (value: string) => {
+    setEnvConfigValue('publicKey', value);
+  };
+
+  const setBraintreeAuth = (value: string) => {
+    setEnvConfigValue('braintreeAuth', value);
   };
 
   return (
@@ -83,13 +87,10 @@ export default function ConfigurationContextProvider({ children }: Configuration
       setApi: setApiWrapper,
       rjs,
       setRjs,
-      publicKey,
-      setPublicKey,
-      braintreeAuth,
+      braintreeAuth: envConfig[api].braintreeAuth,
       setBraintreeAuth,
-
-      envConfig,
-      setEnvPublicKey,
+      publicKey: envConfig[api].publicKey,
+      setPublicKey,
     }}>
       {children}
     </ConfigurationContext.Provider>
