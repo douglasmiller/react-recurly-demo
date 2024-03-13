@@ -29,8 +29,8 @@ export function Venmo() {
 
   return (
     <form onSubmit={handleSubmit} ref={formRef}>
-      <input type="text" data-recurly="first_name" placeholder="First name" />
-      <input type="text" data-recurly="last_name" placeholder="Last name" />
+      <input className="text-slate-600" type="text" data-recurly="first_name" placeholder="First name" />
+      <input className="text-slate-600" type="text" data-recurly="last_name" placeholder="Last name" />
       <button>Pay with Venmo</button>
     </form>
   );
